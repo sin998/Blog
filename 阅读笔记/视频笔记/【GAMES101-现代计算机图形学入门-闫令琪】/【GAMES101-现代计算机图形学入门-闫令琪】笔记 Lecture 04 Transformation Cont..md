@@ -4,13 +4,21 @@
 
 # 3D transformations
 
+前面21分钟是复习：
 
+![image-20210907095904059](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109070959059.png)
+
+后面才是正片：
+
+![image-20210907095511001](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109070955648.png)
+
+证明：R~-θ~ = R~θ~^-1^
 
 ![image-20210906115943771](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061159160.png)
 
+# 3D Transformations
 
-
-
+这部分和[【3D数学基础：图形与游戏开发】笔记 第10章 3D中的方位与角位移]()内容相同，不再赘述，如果需要了解可以[点击前往笔记]()或者[点击这里前往原视频]()。TODO
 
 # Viewing(观测) transformation
 
@@ -128,9 +136,9 @@
 
 正交投影：假设相机无限远，近平面投影出来Camera看到的东西都是一样大。
 
-## Orthographic(正交) projection
+### Orthographic(正交) projection
 
-### 简单做法
+#### 简单做法
 
 ![image-20210906143807639](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061438607.png)
 
@@ -143,7 +151,7 @@
 
 右下那副图：是正交投影的结果图，不管右上那副图的坐标是多少，我们都将物体的坐标移到[-1,1]^2^这个范围，这是一个约定俗成的一个做法，因为方便计算。
 
-### 正规做法
+#### 正规做法
 
 这个做法并不是很方便，现在介绍一个正规一点的做法：
 
@@ -157,7 +165,7 @@
 
 ![image-20210906145243575](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061452880.png)
 
-**写出它的矩阵表示**
+#### 写出它的矩阵表示
 
 ![image-20210906150421076](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061504833.png)
 
@@ -169,9 +177,9 @@
 - OpenGL是左手坐标系，在API的调用上会有一些方便，但也是会产生一些问题（例如 X × Y != Z）。
 - 在变换完之后物体的长宽高会拉伸，这时候先不做处理，等后面视口变换还要拉伸一次，那个时候再一起处理。
 
-## Perspective(透视) projection
+### Perspective(透视) projection
 
-### 透视投影概述
+#### 透视投影概述
 
 ![image-20210906151258871](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061512940.png)
 
@@ -179,7 +187,7 @@
 - 透视投影即是近大远小。
 - 透视投影后的平行线不再平行，仔细查看图中原线段AB和透视投影后的A^'^B^'^。
 
-### 是欧几里得错了吗
+#### 是欧几里得错了吗
 
 ![image-20210906151601383](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061516839.png)
 
@@ -187,7 +195,7 @@
 
 并不是，欧几里得是说的一个平面，而透视投影是一个平面投影到另一个平面，所以投影的结果发生了变化，实际上原平面的平行线还是平行线，只不过我们观测的是投影后的平面，所以误以为平行线相交了。
 
-### 在继续进行之前
+#### 在继续进行之前
 
 ![image-20210906152153504](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061521960.png)
 
@@ -201,7 +209,7 @@
 
 比如（1,0,0,1）和（2,0,0,2）都表示同一个点：（1,0,0）。这个东西简单但是有用。
 
-### 如何理解透视投影
+#### 如何理解透视投影
 
 ![image-20210906171729661](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061717672.png)
 
@@ -210,7 +218,7 @@
 
 透视投影的矩阵可以直接写出来，但是不好理解。
 
-### 如何“挤”
+#### 如何“挤”
 
 “挤”的过程有几个规定：
 
@@ -224,7 +232,7 @@
 
 这里是Y，同理对于X也是一样的。所以任意在f面找到一点(x,y,z)就能都能找到在n面“挤”过来的新点(x^'^,y^'^,z^'^)。
 
-### 写出矩阵
+#### 写出矩阵
 
 ![image-20210906175101943](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061751274.png)
 
@@ -244,23 +252,43 @@
 
 ![image-20210906180133591](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109061801742.png)
 
-注意最后两句话是解题的关键。
+注意最后两句话是解题的关键，可以使用待定系数法解除这几个数。
 
 利用第一点：近平面上的任何点都不会改变。
 
-所以可以将原来的[x,y,z,1]^T^中的z换成n，得到：[x,y,n,1]^T^，再同乘以n，就得到了[nx,ny,n^2^,n]^T^，即某一个矩阵 × []。最后一样的反推：由结果
+![image-20210907093550755](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109070935147.png)
 
+所以可以将原来的[x,y,z,1]^T^中的z换成n，得到：[x,y,n,1]^T^，再同乘以n，就得到了[nx,ny,n^2^,n]^T^。
 
+即某一个矩阵 × [x,y,n,1]^T^ = n^2^ (这里明显的可以看出n^2^和x、y没有任何关系)。
 
+最后由上式一样的反推：由结果 = n^2^就能反推出来这个矩阵 =（0,0,A,B）。其中A、B还不能确定，它存在以下两种情况：
 
+- 若A=0， 0 * n = 0。这时B可以等于n^2^。
+- 若A=n，n * n =n^2^。这时B可以等于0。
+
+再利用第二点：远平面上的任意z点都不会改变。
+
+找到屏幕特殊点，即屏幕中心点，利用它的性质：
+
+![image-20210907094600405](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109070946821.png)
+
+再求解：
+
+![image-20210907094616548](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109070946864.png)
+
+联立方程组就能解出来：
+
+![image-20210907094656820](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109070946179.png)
+
+现在已经得到了M~persp->ortho~，只需要再做一次正交投影即可。最后透视投影的矩阵M~persp~ = M~ortho~M~persp->ortho~。
 
 # 参考资料&原文链接
 
 [GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
 
-[Bilibili_猎豹网校：游戏开发之3D数学基础](https://www.bilibili.com/video/BV1ib411K7TK)
+[猎豹网校：游戏开发之3D数学基础](https://www.bilibili.com/video/BV1ib411K7TK)
 
 # 本文标签
 
-`图形学`、`游戏开发`、`GAMES101-现代计算机图形学入门-闫令琪`、`Unreal Engine`、`游戏开发基础`、`数学`、`游戏开发数学基础`、`视频系列笔记`。
-
+`计算机图形学`、`游戏开发`、`GAMES101-现代计算机图形学入门-闫令琪`、`Unreal Engine`、`游戏开发基础`、`视频系列笔记`、`笔记`。
