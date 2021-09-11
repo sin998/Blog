@@ -22,6 +22,7 @@ Blog
      │   ├── 【3D数学基础：图形与游戏开发】
      │   │   ├── 【3D数学基础：图形与游戏开发】README.md
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第10章 3D中的方位与角位移 .md
+     │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第12章 几何图元.md
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第14章 三角网格.md
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第1~3章 笛卡尔坐标系统.md
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第4~5章 向量.md
@@ -34,6 +35,7 @@ Blog
      │       └── 【Inside UE4】 README.md
      └── 视频笔记
          └── 【GAMES101-现代计算机图形学入门-闫令琪】
-             ├── 【GAMES101-现代计算机图形学入门-闫令琪】 笔记Lecture 06 Rasterization 2 (Antialiasing and Z-Buffering).md
+             ├── 【GAMES101-现代计算机图形学入门-闫令琪】README.md
              ├── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 04 Transformation Cont..md
-             └── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 05 Rasterization 1 (Triangles).md
+             ├── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 05 Rasterization 1 (Triangles).md
+             └── 【GAMES101-现代计算机图形学入门-闫令琪】笔记Lecture 06 Rasterization 2 (Antialiasing and Z-Buffering).md
