@@ -2,6 +2,10 @@
 
 # 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 01 Overview of Computer Graphics
 
+# 参考资料&原文链接
+
+[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
+
 # 导师介绍
 
 ![image-20210912152830009](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109121528303.png)
@@ -184,10 +188,7 @@ OpenGL等软件的使用。
 
 ![image-20210912161210445](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109121612171.png)
 
-# 参考资料&原文链接
-
-[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
-
 # 本文标签
 
 `计算机图形学`、`游戏开发`、`GAMES101-现代计算机图形学入门-闫令琪`、`Unreal Engine`、`游戏开发基础`、`视频系列笔记`、`笔记`。
+

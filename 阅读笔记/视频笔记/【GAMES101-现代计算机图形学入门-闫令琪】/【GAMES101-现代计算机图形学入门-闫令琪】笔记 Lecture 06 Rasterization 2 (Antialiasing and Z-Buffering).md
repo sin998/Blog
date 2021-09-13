@@ -2,6 +2,12 @@
 
 # 【GAMES101-现代计算机图形学入门-闫令琪】 Lecture 06 Rasterization 2 (Antialiasing and Z-Buffering)
 
+# 参考资料&原文链接
+
+[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
+
+[猎豹网校：游戏开发之3D数学基础](https://www.bilibili.com/video/BV1ib411K7TK)
+
 # 这节课的目标
 
 ![image-20210908095156283](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109080951442.png)
@@ -74,7 +80,7 @@
 
 ![image-20210908102150752](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109081021399.png)
 
-所以先采样再模糊是不可以的，因为这相当于是信号频率不变，采样频率变更慢了。
+所以先采样再模糊是不可以的。先采样就是把信号的频谱进行搬移，这时候会有频谱的混叠，在信号混叠之后再把信号截断，会发现混叠的信号还是混叠的信号。
 
 # 很多的为什么
 
@@ -376,12 +382,6 @@ f：b卷积d的结果。即频域。
 代价就是计算量变大。
 
 ![image-20210908170712233](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109081707071.png)
-
-# 参考资料&原文链接
-
-[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
-
-[猎豹网校：游戏开发之3D数学基础](https://www.bilibili.com/video/BV1ib411K7TK)
 
 # 本文标签
 

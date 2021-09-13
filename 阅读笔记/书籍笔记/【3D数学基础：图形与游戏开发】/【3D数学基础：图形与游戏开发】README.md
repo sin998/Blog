@@ -6,6 +6,16 @@
 
 版权归原作者所有，这里只记录笔记，以供学术探讨，书籍和资料来源于网络，侵权请联系删除！
 
+# 参考资料&原文链接
+
+参考书籍：【3D数学基础：图形与游戏开发】 ISBN7-302-10946XTP.7262
+
+(美) etcher Dun著、(美) an Arberry 清华大学出版社
+
+[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
+
+[猎豹网校：游戏开发之3D数学基础](https://www.bilibili.com/video/BV1ib411K7TK)
+
 # 前言
 
 3D数学也是游戏开发的基础内容，需要夯实。所以特地选用业内经典书籍：《3D数学基础：图形与游戏开发》第一版，第二版比第一版增加了的内容：
@@ -61,12 +71,6 @@
 ![4](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109062027257.png)
 
 ![5](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109062027411.png)
-
-# 参考资料&原文链接
-
-[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
-
-[猎豹网校：游戏开发之3D数学基础](https://www.bilibili.com/video/BV1ib411K7TK)
 
 # 本文标签
 

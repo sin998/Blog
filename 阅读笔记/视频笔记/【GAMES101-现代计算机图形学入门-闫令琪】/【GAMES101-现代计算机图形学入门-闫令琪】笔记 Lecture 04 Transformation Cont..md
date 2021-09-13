@@ -2,6 +2,12 @@
 
 # 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 04 Transformation Cont
 
+# 参考资料&原文链接
+
+[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
+
+[猎豹网校：游戏开发之3D数学基础](https://www.bilibili.com/video/BV1ib411K7TK)
+
 # 3D transformations
 
 前面21分钟是复习：
@@ -282,12 +288,6 @@
 ![image-20210907094656820](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109070946179.png)
 
 现在已经得到了M~persp->ortho~，只需要再做一次正交投影即可。最后透视投影的矩阵M~persp~ = M~ortho~M~persp->ortho~。
-
-# 参考资料&原文链接
-
-[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
-
-[猎豹网校：游戏开发之3D数学基础](https://www.bilibili.com/video/BV1ib411K7TK)
 
 # 本文标签
 

@@ -2,6 +2,10 @@
 
 # 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 02 Review of Linear Algebra
 
+# 参考资料&原文链接
+
+[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
+
 # 线性代数概论
 
 国内翻译为糙快猛- -。
@@ -78,10 +82,6 @@
 # 矩阵
 
 这节和3D数学里面的内容差不多，这节课的内容在本博客中也有，[点击这里](https://www.cnblogs.com/sin998/p/15228118.html)和[这里](https://www.cnblogs.com/sin998/p/15229522.html)打开笔记对照视频进行食用更佳。
-
-# 参考资料&原文链接
-
-[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
 
 # 本文标签
 

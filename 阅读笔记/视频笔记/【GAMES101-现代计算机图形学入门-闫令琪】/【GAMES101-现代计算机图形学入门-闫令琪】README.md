@@ -2,6 +2,10 @@
 
 # 【GAMES101-现代计算机图形学入门-闫令琪】README
 
+# 参考资料&原文链接
+
+[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
+
 # 概览
 
 闫大神，高考状元，siggraph2019最佳博士论文，phd毕业直接拿到了ap，可能这些形容不出来他有多牛，那就挑个地球人都知道的，英伟达rtx的那个r跟他就有很大关系。
@@ -15,7 +19,7 @@
 
 github有fundamental of computer science 第四版 的pdf和course sides   
 
-git地址 git@github.com:yanxuanm/Computer-Graphics.git
+git地址：git@github.com:yanxuanm/Computer-Graphics.git
 
 # 其他
 
@@ -58,10 +62,6 @@ http://games-cn.org/games202/
 【14】实时抗锯齿与超采样（TAA，SMAA，DLSS，etc.）
 
 【15】实时渲染中常用的工业界技术（cascaded/tiled/deferred shading，particles，对游戏引擎的一些简单分析，etc.）
-
-# 参考资料&原文链接
-
-[GAMES101-现代计算机图形学入门-闫令琪](https://www.bilibili.com/video/BV1X7411F744)
 
 # 本文标签
 
