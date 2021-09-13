@@ -13,15 +13,33 @@
 闫令琪博士，加州大学圣芭芭拉分校助理教授，博士生导师，于2013年获清华大学学士学位，2018 年获加州大学伯克利分校博士学位。他的主要研究方向是基于物理的真实感图形渲染及其相关的数学和物理理论，包括真实感材质观测和建模、离线和实时的光线追踪、信号的采样和重建、高效的光线传播和散射等等。闫令琪博士在高度细致的真实感渲染方面的研究开创了下一代计算机图形学的研究方向，同时，他在实时光线追踪方面的贡献直接推动了工业界的光线追踪GPU 架构。闫令琪博士在2018 年因其开创性研究被授予C.V. Ramamoorthy 杰出科研奖。此外，他的科研成果还被直接应用于电影和游戏行业，曾帮助影片《猩球崛起3：终极之战》获得2018 年奥斯卡最佳视觉效果奖提名。
 ——来源：https://baike.baidu.com/reference/24169733/4502KHTD5Q7oTocP8dfmr5c0ckk7bNIhse_SV_1vVNmuLG2rKd_OxMBkUFLzI3jxHgxpDcFM3tnEoAH9nEs8ZJh4o-Hawyba18ooVc7t5oDM4L04_84B
 
-# 资源
+# 章节
+
+[【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 01 Overview of Computer Graphics](https://www.cnblogs.com/sin998/p/15259021.html)
+
+[【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 02 Review of Linear Algebra](https://www.cnblogs.com/sin998/p/15259890.html)
+
+[【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 03 Transformation](https://www.cnblogs.com/sin998/p/15259915.html)
+
+[【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 04 Transformation Cont](https://www.cnblogs.com/sin998/p/15255443.html)
+
+[【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 05 Rasterization 1 (Triangles)](https://www.cnblogs.com/sin998/p/15243703.html)
+
+[【GAMES101-现代计算机图形学入门-闫令琪】笔记Lecture 06 Rasterization 2 (Antialiasing and Z-Buffering)](https://www.cnblogs.com/sin998/p/15243674.html)
+
+[【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 07 Shading 1 (Illumination, Shading and Graphics Pipeline)](https://www.cnblogs.com/sin998/p/15265291.html)
+
+# 目录
+
+
+
+# 其他
 
 ## 相关书籍
 
 github有fundamental of computer science 第四版 的pdf和course sides   
 
 git地址：git@github.com:yanxuanm/Computer-Graphics.git
-
-# 其他
 
 ## 课程作业提交地址
 
