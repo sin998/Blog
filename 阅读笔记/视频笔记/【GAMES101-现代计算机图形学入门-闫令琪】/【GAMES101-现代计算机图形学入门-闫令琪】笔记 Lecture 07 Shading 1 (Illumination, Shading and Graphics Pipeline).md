@@ -133,6 +133,8 @@ shading point：着色点。
 
 ## 漫反射
 
+### 定义
+
 ![image-20210913180925767](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109131809480.png)
 
 有一个光源打到物体上，然后被反射到各个方向。
@@ -140,6 +142,8 @@ shading point：着色点。
 ![image-20210913181121876](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109131811792.png)
 
 给定一个shading point，它能接受到的光的大小是与它自己和光的夹角的大小决定的。
+
+### 能量球壳
 
 有接收能量，那么就有发射能量。如图：
 
@@ -164,6 +168,8 @@ shading point：着色点。
 4π * 1^2^ * I~内~ = 4πr^2^ * I~外~
 
 ​                  I~外~= I~内~/r^2^
+
+### 漫反射的表示
 
 所以漫反射就可以表示了：
 

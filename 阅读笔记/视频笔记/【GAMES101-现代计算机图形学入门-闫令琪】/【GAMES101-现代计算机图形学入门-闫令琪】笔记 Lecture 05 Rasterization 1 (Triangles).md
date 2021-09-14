@@ -168,7 +168,11 @@ Raster（德语）。Rasterize的意思就是在屏幕上绘图，即光栅化�
 
 前面说到一个像素只能显示一个颜色，并且要么就显示整个颜色，要么就不显示。那么像图中这种三角形穿过了像素格子但是没占满的，整个像素到底是显示还是不显示呢？这就需要判断一下三角形和像素中心点的关系来决定。
 
-## 最简单的方法：采样
+## 采样
+
+### 采样的定义
+
+最简单的方法：采样。
 
 ![image-20210907160130543](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109071601692.png)
 
@@ -179,6 +183,8 @@ Raster（德语）。Rasterize的意思就是在屏幕上绘图，即光栅化�
 采样是图形学中一个非常重要的概念。
 
 这里的采样是像素中心对屏幕的采样。即需要一个函数，用它来算出在每一个像素中心定义的值是多少。
+
+### 对每个像素进行采样
 
 ![image-20210907160203997](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109071602942.png)
 
@@ -192,6 +198,8 @@ Raster（德语）。Rasterize的意思就是在屏幕上绘图，即光栅化�
 
 示例代码：考虑屏幕上的所有点。
 
+### 如何判断这个像素（中心）点是否在三角形内
+
 ![image-20210907162220422](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109071622325.png)
 
 如何判断？用向量叉积的几何意义，内容和前面章节的[【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 02 Review of Linear Algebra](https://www.cnblogs.com/sin998/p/15259890.html)一模一样，这里不再赘述。
@@ -202,6 +210,8 @@ Raster（德语）。Rasterize的意思就是在屏幕上绘图，即光栅化�
 
 例如OpenGL规定若点在上边或左边则认为该点在三角形内，若在下边或右边则认为该点不在三角形内。
 
+### 其他的检测方法
+
 ![image-20210907163056530](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109071630676.png)
 
 其实我们不必检测屏幕中的每个像素，即如果我们知道左边第一列绝对不会碰到三角形，那么就不必去检测它了。我们用一个盒子将三角形包围起来，这个正方形盒子的范围是三角形的覆盖上下边和左右边。我们称为AABB盒，详情见[【3D数学基础：图形与游戏开发】笔记 第12章 几何图元](https://www.cnblogs.com/sin998/p/15257006.html)。
@@ -209,6 +219,8 @@ Raster（德语）。Rasterize的意思就是在屏幕上绘图，即光栅化�
 ![image-20210907163621962](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109071636468.png)
 
 更快的方法是用左和右的检测盒，但是这并不容易。
+
+### 像素不同的排列方式
 
 ![image-20210907163748936](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109071637008.png)
 
@@ -224,6 +236,8 @@ Raster（德语）。Rasterize的意思就是在屏幕上绘图，即光栅化�
 
 液晶像素实际上并不能在一个统一颜色的正方形中发光，但这种近似足以满足当前的讨论，所以我们认为液晶像素就是在统一颜色的正方形中发光，影响不大。
 
+## 最终的采样信号
+
 ![image-20210907164546008](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109071645941.png)
 
 现在我们能知道哪些该显示颜色哪些不显示颜色，结果如下图：
@@ -233,6 +247,8 @@ Raster（德语）。Rasterize的意思就是在屏幕上绘图，即光栅化�
 但我们想要的是下图：
 
 ![image-20210907164647567](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109071646932.png)
+
+## 锯齿
 
 锯齿是光栅化图形学中一致致力于解决的一个严重问题。它发生的原因是：
 

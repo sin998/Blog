@@ -90,7 +90,7 @@
 
 ### 余弦和正弦
 
-先看简单的余弦和正弦
+先看简单的余弦和正弦：
 
 ![image-20210908103429428](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109081034948.png)
 
@@ -162,7 +162,7 @@ f(x)：
 
 ## 走样
 
-高频信号采样不足表现就会发生错误
+高频信号采样不足表现就会发生错误：
 
 ![image-20210908141050876](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109081410857.png)
 
@@ -319,9 +319,13 @@ f：b卷积d的结果。即频域。
 
 如图，我们认为虚线之外就是高频信号，我们这时就不要了，直接砍掉，然后对剩下的信号再采样，这样就不会发生混叠。
 
-回顾：
+# 回顾本节课
+
+## 模糊
 
 ![image-20210908164345737](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109081643481.png)
+
+## 采样
 
 就是先把原本的三角形模糊，即卷积（对像素周围的点用一个盒子来平均）。
 
@@ -333,13 +337,15 @@ f：b卷积d的结果。即频域。
 
 ![image-20210908164748632](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109081647129.png)
 
+## 卷积
+
 然后就能的到卷积的值：
 
 ![image-20210908164808692](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109081648831.png)
 
 其实求出它的平均还挺难的。所以人们就用了一个近似的方法来处理，但是近似并不能真正解决这个问题：MSAA。
 
-### MSAA
+### 近似卷积：MSAA
 
 ![image-20210908164918848](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202109081649806.png)
 
