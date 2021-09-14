@@ -25,6 +25,7 @@ Blog
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第12章 几何图元.md
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第13章 几何检测.md
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第14章 三角网格.md
+     │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第15章 图形数学.md
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第1~3章 笛卡尔坐标系统.md
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第4~5章 向量.md
      │   │   ├── 【3D数学基础：图形与游戏开发】笔记 第7~8章 矩阵和线性变换.md
@@ -42,4 +43,7 @@ Blog
              ├── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 03 Transformation.md
              ├── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 04 Transformation Cont..md
              ├── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 05 Rasterization 1 (Triangles).md
-             └── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 06 Rasterization 2 (Antialiasing and Z-Buffering).md
+             ├── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 06 Rasterization 2 (Antialiasing and Z-Buffering).md
+             ├── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 07 Shading 1 (Illumination, Shading and Graphics Pipeline).md
+             ├── 【GAMES101-现代计算机图形学入门-闫令琪】笔记 Lecture 08 Shading 2 (Shading, Pipeline and Texture Mapping).md
+             └── 【GAMES101-现代计算机图形学入门-闫令琪】笔记模板.md
