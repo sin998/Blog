@@ -1,10 +1,14 @@
 [TOC]
 
+#  【UE4】UE4中对象的创建和销毁
+
 # 参考文章&&原文链接
 
-官方文档：[点击前往](https://docs.unrealengine.com/4.26/zh-CN/ProgrammingAndScripting/ProgrammingWithCPP/IntroductionToCPP/UObject)。
+[虚幻官方文档 - UObject实例创建](https://docs.unrealengine.com/4.27/zh-CN/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/Objects/Creation/)
 
-原文链接：点击前往。
+[虚幻官方文档 - 生成Actor](https://docs.unrealengine.com/4.27/zh-CN/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/Actors/Spawning/)
+
+[虚幻官方文档 - 为Actor添加组件](https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/HowTo/AddingComponents/)
 
 # UObject
 
@@ -132,3 +136,6 @@ MyActorComponent->DestoryComponent();
 TSharedPtr<FMyObjectType> NewSharedPtr = MakeShared<FMyObjectType>();
 ```
 
+# 本文标签
+
+`游戏开发`、`游戏开发基础`、`Unreal Engine`、`总结性知识`、`UE总结性知识`。

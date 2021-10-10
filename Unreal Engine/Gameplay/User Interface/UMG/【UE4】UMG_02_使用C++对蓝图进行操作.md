@@ -1,10 +1,10 @@
 [TOC]
 
-# 【UE4】UMG 02_C++对蓝图的基础操作
+# 【UE4】UMG_使用C++对蓝图进行操作
 
 # 参考资料&原文链接
 
-TODO 注意编码格式UTF8，VS需要插件[开发工具的选择]()
+[开发工具的选择](https://www.cnblogs.com/sin998/p/15390468.html)
 
 [C语言中文网-C++如何防止头文件被重复引入（3种方法）？](http://c.biancheng.net/view/vip_7676.html)
 
@@ -14,7 +14,7 @@ TODO 注意编码格式UTF8，VS需要插件[开发工具的选择]()
 
 [虚幻官方文档-游戏性类](https://docs.unrealengine.com/4.26/zh-CN/ProgrammingAndScripting/GameplayArchitecture/Classes/)
 
-TODO[UE命名规范]()
+[UE项目目录、资源、代码规范及管理](https://www.cnblogs.com/sin998/p/15390854.html)
 
 [腾讯游戏学院-深入理解UE4宏定义—GENERATED_BODY](https://gameinstitute.qq.com/community/detail/114465)
 
@@ -24,7 +24,7 @@ TODO[UE命名规范]()
 
 ![image-20211007205306800](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/NZzCkurjR92tSPE.png)
 
-项目建好以后会自动打开本地的编辑器，这个编辑器可以修改，这在TODO[开发工具的选择]()中介绍过，我用的是Rider，所以会自动打开Rider，静待Rider加载完成。
+项目建好以后会自动打开本地的编辑器，这个编辑器可以修改，这在[开发工具的选择](https://www.cnblogs.com/sin998/p/15390468.html)中介绍过，我用的是Rider，所以会自动打开Rider，静待Rider加载完成。
 
 ## 新建C++文件
 
@@ -104,9 +104,13 @@ TODO[UE命名规范]()
 
 6. 蓝图的继承个数。这个功能Rider专属，它可以很方便的知道这个类被哪些蓝图继承，我们这里才刚建起来，所以还没有蓝图继承呢。
 
-7. TODO
+7. 这个主要用于UE的模块化插件开发。试想一下你写了个插件，你应该如何让别人使用呢？使用这个东西就可以把接口暴露出去给别人使用，我这个项目叫做TestProject，所以这里就是TESTPROJECT_API。举个例子，插件OpenColorIO的API长这样：
 
-8. 我们自己创建的类名。注意我们创建的时候填写的文件名是「TestMainUI」，而类名是「UTestMainUI」。这是虚幻自动帮我们添加的，这是我们必须遵守的TODO[UE命名规范]()，这表示我们这个类的最终的父类是继承的UObject。
+   ![img](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202110101628797.png)
+
+   ![img](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202110101628541.png)
+
+8. 我们自己创建的类名。注意我们创建的时候填写的文件名是「TestMainUI」，而类名是「UTestMainUI」。这是虚幻自动帮我们添加的，这是我们必须遵守的[UE项目目录、资源、代码规范及管理](https://www.cnblogs.com/sin998/p/15390854.html)，这表示我们这个类的最终的父类是继承的UObject。
 
    如果是在Rider中没有遵守UE命名规范的话编译器会报错，通不过编译。例如我这里手动把U去掉并且不理会Rider的提示：
 
@@ -158,7 +162,7 @@ Content
      └── WidgetBlueprint
          └── WB_TestMainUI.uasset
 
-我将这个蓝图命名为「WB_TestMainUI」，这个也在TODO命名规则中讲到过，「WB」是「WidgetBlueprint」的缩写，后面跟上一个下划线，再跟上具体的UI名。
+我将这个蓝图命名为「WB_TestMainUI」，这个也在[UE项目目录、资源、代码规范及管理](https://www.cnblogs.com/sin998/p/15390854.html)中讲到过，「WB」是「WidgetBlueprint」的缩写，后面跟上一个下划线，再跟上具体的UI名。
 
 然后重选「TestMainUI」为我们蓝图的父类：
 
@@ -254,7 +258,7 @@ private:
 - 需要重写需要的父类函数。
 - 除了`BindWidget`用来绑定控件外，还有一个常用的是`BindWidgetAnim`，即绑定动画。
 - 绑定的类型必须是控件的指针，不能是控件。
-- 如果控件需要绑定函数，该函数必须加上`UFUNCTION()`宏。例如Button需要绑定OnClick、CheckBox需要绑定OnCheckStateChanged等等时。
+- 如果控件需要绑定函数，该函数必须加上`UFUNCTION()`宏。例如Button需要绑定OnClick、CheckBox需要绑定OnCheckStateChanged等时。
 
 # 操作蓝图中的控件
 
@@ -329,7 +333,7 @@ void UTestMainUI::OnBtnClick_ChangeTab()
 
 # 总结
 
-
+本文介绍了如何创建自定义蓝图界面，并且认识了UE4基本的C++代码框架，最后还实现了一个小功能。
 
 # 本文标签
 
