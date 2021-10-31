@@ -4,6 +4,8 @@
 
 # 参考资料&原文链接
 
+[虚幻官方文档 - UMG 最佳实践](https://www.unrealengine.com/ja/tech-blog/umg-best-practices?mkt_tok=eyJpIjoiTXpnNE56WXdZVEV5WlRGaSIsInQiOiJtaFBFYWdNRDRxMU05aHVjc2hHcVwvWG1FVk5rQUZrWmdLYlNmUzltbUxrT3lHekJYNlI2SnVqUkZTY0NQS1k5OW12TDdHaHhzam1pVzJ0MFdKTlIyc0pDTTJ2MGpcL0NyXC9vXC9SWlV5Qmw5NlNFSHdHMStWbDFpTXBDOGNUSlJQOEgifQ%3D%3D&lang=ja)
+
 [开发工具的选择](https://www.cnblogs.com/sin998/p/15390468.html)
 
 [C语言中文网-C++如何防止头文件被重复引入（3种方法）？](http://c.biancheng.net/view/vip_7676.html)
@@ -17,6 +19,29 @@
 [UE项目目录、资源、代码规范及管理](https://www.cnblogs.com/sin998/p/15390854.html)
 
 [腾讯游戏学院-深入理解UE4宏定义—GENERATED_BODY](https://gameinstitute.qq.com/community/detail/114465)
+
+# 类结构
+
+下图来自[虚幻官方文档 - UMG 最佳实践](https://www.unrealengine.com/ja/tech-blog/umg-best-practices?mkt_tok=eyJpIjoiTXpnNE56WXdZVEV5WlRGaSIsInQiOiJtaFBFYWdNRDRxMU05aHVjc2hHcVwvWG1FVk5rQUZrWmdLYlNmUzltbUxrT3lHekJYNlI2SnVqUkZTY0NQS1k5OW12TDdHaHhzam1pVzJ0MFdKTlIyc0pDTTJ2MGpcL0NyXC9vXC9SWlV5Qmw5NlNFSHdHMStWbDFpTXBDOGNUSlJQOEgifQ%3D%3D&lang=ja)。
+
+通常，我们推荐遵循以下模式的架构：
+
+![Unreal+Engine_tech-blog_umg-best-practices_TechBlog_UMG-Best-Practed_Blog-body-524x215-05b9bf4b4413ae4e6d4924da8267d3f87048bf2f](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202110301022151.png)
+
+> ### **UMyData**是一个继承自 UObject 的 C++ 类。
+>
+> 创建一个数据类来封装 UI 试图传达给用户的所有信息。
+> 作为一个 UObject，它具有公共/私有访问控制，具有 getter 和 setter，并包含一个方便的 API。
+>
+> 这种方法将数据的生命周期与 UI 分开。这是非常可取的。所有数据源，例如商店报价、库存项目和玩家统计数据，很少与 UI 对象共享生命周期。此外，多个小部件可以从同一个数据对象中检索数据。这些类可能已经创建并存在于为不同领域的工程师创建游戏或商店后端的过程中。但是，即使在这种情况下，UI 通常也需要自己的数据类来将游戏玩法数据与大量特定于 UI 的数据结合起来。
+>
+> ### **UMyWidget**是一个继承自 UUserWidget 的 C++ 类。
+>
+> 这些 C++ 类定义了特定于小部件的 API，用于蓝图和蓝图，用于定义蓝图必须遵循的契约，以便与底层系统正确交互可用事件。
+>
+> ### **MyBlueprint**是一个衍生自 UMyWidget 的小部件蓝图。
+>
+> 在该小部件蓝图中，创建和布置您需要的所有可见 UI，应用样式，利用 UMyData 和 UMyWidget 提供的 API，以及所有 UI 基元（文本框、图像等）。输入所需的数据。它还侦听 UMyWidget 事件以了解何时更新相应的 UI。如果是交互式的，它还可以调用 UMyData 或 UMyWidget 提供的 API 以响应按钮单击。
 
 # 新建文件
 
@@ -86,9 +111,9 @@
 
      > 当一个头文件中include了“xxx.generated.h“，意味着这个头文件加入了反射系统。那些UPROPERTY,UFUNCTION之类的宏，也标记着这些方法属性等等加入了UE4的反射系统，**加入了反射系统，UE4才能帮您做GC（垃圾回收），您才能实现蓝图C++通信等等很多功能。**
 
-4. 类注释。类注释一般是多行，内容较多，概要描述该类的功能和注意事项。给类添加注释是一个好习惯。
+4. 类注释。类注释一般是多行，内容较多，概要描述该类的功能、注意事项、作者、版本号和时间等。给类添加注释是一个好习惯。
 
-   常用的标签有：`@description`、`@author`、`@time`等。
+   常用的标签有：`@description`、`@author`、`@version`、`@data`、`@time`等。
 
    除了类注释还有方法注释，与类注释相似，是用来对方法进行注释的，请自行使用搜索引擎了解详情。
 
@@ -219,6 +244,9 @@ public:
 	 * UE就会帮助我们拿到目标控件的指针。
 	 * 注意这里的控件类型控件名都要和蓝图中的控件类型与控件名严格一一对应。
 	 * 如果不严格一一对应的话蓝图将会报错，例如：A required widget binding"Btn ChangeTab" of type OButton was not found. 
+	 * 如果没有用BindWidget的话你想要得到蓝图中的控件你得在Initialize()中这么写：
+	 * WS_TabContent = Cast<UWidgetSwitcher>(GetWidgetFromName(TEXT("WS_TabContent")));
+	 * 其中Button_Start是蓝图中Button的名字。可见BindWidget帮了我们省了好多事，代码好看又轻便起来。
 	 */
 	UPROPERTY(Meta = (BindWidget))
 	class UWidgetSwitcher* WS_TabContent;
@@ -251,11 +279,11 @@ private:
 
 这几行代码很简单，相信您看结合代码中的注释和下面的文章就能轻松看懂：
 
-[虚幻官方文档-元数据说明符](https://docs.unrealengine.com/4.27/en-US/ProgrammingAndScripting/GameplayArchitecture/Metadata/)、[虚幻官方文档-UMWidget::UPROPERTY 宏的有效元数据关键字](https://docs.unrealengine.com/4.27/en-US/API/Runtime/UMG/Components/UMWidget_1/)、[林清的博客-UE4笔记-UMG和Slate记录](https://home.cnblogs.com/u/linqing/)(https://www.cnblogs.com/linqing/p/9839355.html)。
+[虚幻官方文档-元数据说明符](https://docs.unrealengine.com/4.27/en-US/ProgrammingAndScripting/GameplayArchitecture/Metadata/)、[虚幻官方文档-UMWidget::UPROPERTY 宏的有效元数据关键字](https://docs.unrealengine.com/4.27/en-US/API/Runtime/UMG/Components/UMWidget_1/)、[林清的博客-UE4笔记-UMG和Slate记录](https://www.cnblogs.com/linqing/p/9839355.html)。
 
 其中需要注意的是：
 
-- 需要重写需要的父类函数。
+- 需要重写需要的父类函数。这个会在后面讲解UMG生命周期和搭建UI框架的时候单独讲解。
 - 除了`BindWidget`用来绑定控件外，还有一个常用的是`BindWidgetAnim`，即绑定动画。
 - 绑定的类型必须是控件的指针，不能是控件。
 - 如果控件需要绑定函数，该函数必须加上`UFUNCTION()`宏。例如Button需要绑定OnClick、CheckBox需要绑定OnCheckStateChanged等时。

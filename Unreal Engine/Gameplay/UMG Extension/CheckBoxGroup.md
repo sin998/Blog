@@ -68,6 +68,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CheckBox Group")
 	bool SetChildState(UCheckBox* Child, bool status);
 
+	//动态刷新下group，适用于代码动态插入checkbox的情况
+	void FlushGroup();
+
+	//广播组内哪个checkbox状态发生了改变
+	UPROPERTY(BlueprintAssignable, Category = "CheckBox Group")
+	FOnCheckBoxGroupStateChangedEvent _onStateChangedEvent;
+
 private:
 	//从逻辑上添加Child CheckBox(控件不一定在CheckGroupPanel的层级中，只是会被group管理)
 	UE_DEPRECATED(4.21, L"理论上有需求，但是容易造成混乱，那就算了，废弃掉，思路留着.")
@@ -81,10 +88,6 @@ protected:
 	//是否允许checkbox手动点击切换为unchecked状态
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CheckBox Group")
 	bool bAllowSwitchOff;
-
-	//广播组内哪个checkbox状态发生了改变
-	UPROPERTY(BlueprintAssignable, Category = "CheckBox Group")
-	FOnCheckBoxGroupStateChangedEvent _onStateChangedEvent;
 
 	FScriptDelegate _onStateChangedScriptDelegate;
 
@@ -253,6 +256,16 @@ TArray<UCheckBox*> UCheckBoxGroup::GetAllChildCheckBox(UPanelWidget* Parent)
             TArray<UCheckBox*> ChildChildList = GetAllChildCheckBox(Cast<UPanelWidget>(Child));//递归检查子节点
             if (ChildChildList.Num()>0)
                 ChildList.Append(ChildChildList);
+		}
+		else if (Cast<UUserWidget>(Child)) // 10.18添加子控件对userwidget的支持。
+		{
+			UWidget* Temp = Cast<UUserWidget>(Child)->GetRootWidget();
+			if (Cast<UPanelWidget>(Temp))
+			{
+				TArray<UCheckBox*> ChildChildList = GetAllChildCheckBox(Cast<UPanelWidget>(Temp));
+				if (ChildChildList.Num() > 0)
+					ChildList.Append(ChildChildList);
+			}
 		}
 	}
 	return ChildList;
@@ -447,6 +460,15 @@ bool UCheckBoxGroup::SetChildState(UCheckBox* Child, bool status)
 	return true;
 }
 
+
+void UCheckBoxGroup::FlushGroup()
+{
+	_lastCheckedChild = nullptr;
+	if (GetChildrenCount() > 0)
+	{
+		InitGroup();
+	}
+}
 ```
 
 usage：
