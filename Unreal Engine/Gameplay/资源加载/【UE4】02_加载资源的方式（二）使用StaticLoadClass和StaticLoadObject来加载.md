@@ -1,51 +1,32 @@
 [TOC]
 
-# 【UE4】加载资源的方式（一）StaticLoadClass和StaticLoadObject
+# 【UE4】加载资源的方式（二）使用StaticLoadClass和StaticLoadObject来加载
 
 # 参考资料&原文链接
 
 [UE4笔记---C++加载BP蓝图及C++BP蓝图文件并创建UUserWidget对象](https://blog.csdn.net/chinahaerbin/article/details/74905439)
 
+[UE4中资源加载资源的方式](https://blog.csdn.net/a359877454/article/details/52765133)
+
 [[UE4]C++实现动态加载的问题:LoadClass和LoadObject](https://www.iteye.com/blog/aigo-2281558)
 
 [[UE4]C++实现动态加载UObject:StaticLoadObject,以Texture和Material为例](https://www.iteye.com/blog/aigo-2268056)
-
-[[UE4]C++静态加载问题：ConstructorHelpers::FClassFinder和FObjectFinder](https://www.iteye.com/blog/aigo-2281373)
 
 [Dynamic Asset Loading with C++](https://www.youtube.com/watch?v=pJIAmSGxfmQ)
 
 [Dynamic Load Object](https://wiki.unrealengine.com/Dynamic_Load_Object)
 
-# 硬性引用、软性引用、构造时引用
-
-ue4提供了许多种机制来控制引用资产的方式并通过扩展将其装入内存。
-
-这些引用分为两种方式：硬性引用，即对象 A 引用对象 B，并导致对象 B 在对象 A 加载时加载；
-
-软性引用，即对象 A 通过间接机制（例如字符串形式的对象路径）来引用对象 B。
-
-有关硬性引用的一个注意事项是，当对象加载并实例化时，以硬性方式引用的资产会自动加载，可能导致内存使用量迅速增加。
-
-构造时引用：在构造时加载资产并赋给变量。
-
 # 静态加载和动态加载
 
-这里说的**静态加载指的是必须在构造函数中完成的加载方式**，**动态加载值得是可以在Runtime期间加载的方式**。UE4源码里面，前者其实是对后者的一层封装，即FObjectFinder()是对LoadObject()的**封装**。But，FClassFinder()不是对LoadClass()的封装，FClassFinder()**内部调用**的是LoadObject()。
+这里说的**静态加载指的是必须在构造函数中完成的加载方式（主要使用ConstructorHelpers，后面的文章会讲述）**，**动态加载值得是可以在Runtime期间加载的方式**。
 
 # 同步加载和异步加载
 
-注意：`LoadObject<T>()`和`LoadClass<T>()` 这两者的加载方式都是同步加载。若想用异步加载则可以使用`FStreamableManager`，它同时提供了同步加载和异步加载两种方式。
+注意：`LoadObject<T>()`和`LoadClass<T>()` 这两者的加载方式都是同步加载。
 
-# 直接属性引用
+为了防止某些情况下引发的巨大延迟，必要的时候我们需要使用异步资源载入系统。
 
-这是最常见的资产引用情况，并通过 UPROPERTY 宏公开，面板会公开一个UPROPERTY。
-
-`EditDefaultsOnly`说明此属性可通过属性窗口进行编辑，但只能在原型上进行。此说明符与所有"可见"说明符均不兼容。
-
-```c++
-UPROPERTY(EditDefaultsOnly, Category = "DirectRef")
-TSoftObjectPtr<UTexture2D> TestImg;
-```
+若想用异步加载则可以使用`FStreamableManager`，它同时提供了同步加载和异步加载两种方式。后面的文章会讲述。
 
 # 动态加载的核心函数及参数
 
@@ -98,7 +79,7 @@ TSoftObjectPtr<UTexture2D> TestImg;
 
 `LoadClass<T>()`用来加载蓝图并获取蓝图Class，比如角色蓝图。如果要用蓝图创建对象，必须先通过LoadClass获取class，然后再通过SpawnActor生成对象。
 
-# 使用原始动态方式加载UObject和UClass
+# 加载UObject和UClass
 
 ## 加载UObject
 
@@ -227,3 +208,4 @@ MyCharacter = Cast<AMyCharacter>(GetWorld()->SpawnActor(MyCharacterClass,&Locati
 # 本文标签
 
 `游戏开发`、`游戏开发基础`、`Unreal Engine`、`UE4 资源加载`。
+
