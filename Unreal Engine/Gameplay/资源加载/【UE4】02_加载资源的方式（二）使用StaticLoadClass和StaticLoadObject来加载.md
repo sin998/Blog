@@ -126,8 +126,6 @@ private:
 	FString InterestingUE4Path = FString(TEXT("Texture2D'/Game/UI/Images/InterestingUE4.InterestingUE4'"));
 ```
 
-Texture、Material、SoundWave、SoundCue、ParticlesSystem、AnimMontage、BlendSpace(1D，2D，3D)、AnimSequence、AnimBlueprint、SkeletalMesh等等。这些文件的父类都是**UObject**，所以也可以先加载为`UObject*`然后再强转为具体的类型，只要父类是UObject都可以。
-
 还有一个函数是LoadObject，这个函数只是将StaticLoadObject封装成模板而已，除了Outer和Name以外其余都是空：
 
 ```c++
@@ -148,6 +146,10 @@ inline T* LoadObject( UObject* Outer, const TCHAR* Name, const TCHAR* Filename=n
 FString InterestingUE4MappingPath = FString(TEXT("Texture2D'/Game/UI/Images/InterestingUE4Mapping.InterestingUE4Mapping'"));
 UTexture2D * InterestingUE4Mapping = Cast<UTexture2D>(LoadObject<UTexture2D>(nullptr,*InterestingUE4MappingPath));
 ```
+
+### 支持加载的资源类型
+
+Texture、Material、SoundWave、SoundCue、ParticlesSystem、AnimMontage、BlendSpace(1D，2D，3D)、AnimSequence、AnimBlueprint、SkeletalMesh等等。这些文件的父类都是**UObject**，所以也可以先加载为`UObject*`然后再强转为具体的类型，只要父类是UObject都可以。
 
 ## 加载UClass
 

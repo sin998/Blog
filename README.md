@@ -32,9 +32,11 @@ Blog
  │   │       ├── 【UE4】01_加载资源的方式（一）使用引用进行简单加载.md
  │   │       ├── 【UE4】02_加载资源的方式（二）使用StaticLoadClass和StaticLoadObject来加载.md
  │   │       ├── 【UE4】03_加载资源的方式（三）使用ConstructorHelpers来加载.md
- │   │       ├── 【UE4】04_加载资源的方式（四）使用StreamableManager进行加载.md
- │   │       ├── 【UE4】05_加载资源的方式（五）使用AssetManager进行加载.md
- │   │       └── 【UE4】06_加载资源的方式（六）各种加载方式特点总结和选择.md
+ │   │       ├── 【UE4】04_加载资源的方式（四）使用DataAsset引用然后加载.md
+ │   │       ├── 【UE4】05_加载资源的方式（五）使用ObjectLibrary引用然后加载.md
+ │   │       ├── 【UE4】06_加载资源的方式（六）使用StreamableManager进行加载.md
+ │   │       ├── 【UE4】07_加载资源的方式（七）使用AssetManager进行加载.md
+ │   │       └── 【UE4】08_加载资源的方式（八）各种加载方式特点总结和选择.md
  │   └── Plugins
  │       └── 【UE4】插件.md
  ├── 博客导航.md
