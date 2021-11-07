@@ -4,8 +4,6 @@
 
 # 参考资料&原文链接
 
-[AssetManager系列之TAssetPtr与FStreamableManager](https://zhuanlan.zhihu.com/p/80846277)
-
 [UE4资源加载方式](https://www.sohu.com/a/203578475_667928)
 
 [Unreal4异步加载资源](https://zhuanlan.zhihu.com/p/369304308)
@@ -16,15 +14,15 @@
 
 [StreamableManager和异步加载](https://blog.csdn.net/ywjun0919/article/details/92798152)
 
-[UE4学习记录：资源加载（一） ——DataAsset使用](https://blog.csdn.net/hyf2713/article/details/104972017)
-
 [UObjectLibrary](https://docs.unrealengine.com/4.27/en-US/API/Runtime/Engine/Engine/UObjectLibrary/)
+
+[UE4学习记录：资源加载（二） ——异步加载资源](https://blog.csdn.net/hyf2713/article/details/104981113)
 
 # UObjectLibrary
 
 ObjectLibrary：是一个对象，包含了一系列继承共享基类的未加载对象或者未加载对象的FAssetData 。您可以通过提供一个搜索路径来加载一个对象库，它将加载那个路径中的所有资源。
 
-发现了把，里面放的就是一个`FAssetData`：
+发现了吧，里面放的就是一个`FAssetData`：
 
 ```c++
 	/** Asset data of objects that will belong in library, possibly not loaded yet */
@@ -58,14 +56,14 @@ ObjectLibrary：是一个对象，包含了一系列继承共享基类的未加�
 
 注意：最好不要让ObjectLibrary给GC回收掉，所以可以添加到根节点，因为你不想还在扫描或者加载的途中出什么岔子。
 
-扫描好之后可以用`GetAssetDataList`来获取扫描的结果，传入一个`TArray<FAssetData>`的引用来获得所有的路径，这个路径就是传入扫描的路径，然后可以按需加载，可以说是相当方便了。
+扫描好之后可以用`GetAssetDataList`来获取扫描的结果，传入一个`TArray<FAssetData>`的引用来获得所有的路径，这个路径就是传入扫描的路径，然后可以按需加载，可以说是相当方便了，拿到资源后引用后再加载即可。
 
 ```c++
 	/** Returns the list of asset data */
 	virtual void GetAssetDataList(TArray<FAssetData>& OutAssetData);
 ```
 
-最后再加载即可。附上完整代码：
+附上完整代码：
 
 ```c++
 //.h
@@ -120,6 +118,36 @@ void UWC_TestUI::OnBtnClickCommonBtn_OL()
 }
 ```
 
+并且还可以根据名称来拿到我想要的资源，详情见：[官方文档 - 异步资源加载](https://docs.unrealengine.com/4.27/zh-CN/ProgrammingAndScripting/ProgrammingWithCPP/Assets/AsyncLoading/)。
+
+# 其他函数
+
+```c++
+//返回Object的数量
+/** Returns the number of objects */
+int32 GetObjectCount() const;
+//这里还有个方法是：int32 GetAssetDataCount() const 
+
+//返回资产数据列表
+/** Returns the list of asset data */
+virtual void GetAssetDataList(TArray<FAssetData>& OutAssetData);
+
+//将整个资源子目录加载到这个对象库中。返回加载的资产数量
+/** Load an entire subdirectory of assets into this object library. Returns number of assets loaded */
+virtual int32 LoadAssetsFromPaths(const TArray<FString>& Paths);
+
+//获取子目录中的资产的资产数据。返回加载的资产数据的数量
+/** Gets asset data for assets in a subdirectory. Returns number of assets data loaded */
+virtual int32 LoadAssetDataFromPaths(const TArray<FString>& Paths, bool bForceSynchronousScan = true);
+virtual int32 LoadAssetDataFromPath(const FString& Path);
+
+```
+
+# 特点
+
+- 其内部只是一个DataAsset而已，只不过不一样的是我们不需要自定义数据结构来记录资产路径，而是需要给它一个扫描路径和扫描类型，那么它就会帮我们记录，就不用我们一个一个手动的添加了。
+- 同样的，他也只是记录路径，加载是靠其他方法。当然你要是想用它自带的方法加载也不是不行。
+
 # 本文标签
 
-`游戏开发`、`游戏开发基础`、`Unreal Engine`、`UE4 资源加载`。
+`游戏开发`、`游戏开发基础`、`Unreal Engine`、`UE资源加载`。

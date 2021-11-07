@@ -8,6 +8,8 @@
 
 [UE4中资源加载资源的方式](https://blog.csdn.net/a359877454/article/details/52765133)
 
+[UE4资源加载方式](https://www.sohu.com/a/203578475_667928)
+
 [[UE4]C++实现动态加载的问题:LoadClass和LoadObject](https://www.iteye.com/blog/aigo-2281558)
 
 [[UE4]C++实现动态加载UObject:StaticLoadObject,以Texture和Material为例](https://www.iteye.com/blog/aigo-2268056)
@@ -207,7 +209,16 @@ FRotator Rotation(0.0,0,0);
 MyCharacter = Cast<AMyCharacter>(GetWorld()->SpawnActor(MyCharacterClass,&Location,&Rotation));
 ```
 
+# 特点
+
+此加载方式的特点是：
+
+- 同步加载，注意大资源可能会引起的卡顿和掉帧。
+- 需要路径不能出错（后面会用优化），蓝图则需要加上`_C`。
+- 不论加载的是UObject还是UClass，其本质都是使用路径加载，即必须知道完整路径。
+- 支持加载的UObject的类型很多。例如Texture、Material、SoundWave、SoundCue、ParticlesSystem、AnimMontage、BlendSpace(1D，2D，3D)、AnimSequence、AnimBlueprint、SkeletalMesh等等。
+
 # 本文标签
 
-`游戏开发`、`游戏开发基础`、`Unreal Engine`、`UE4 资源加载`。
+`游戏开发`、`游戏开发基础`、`Unreal Engine`、`UE资源加载`。
 

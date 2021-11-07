@@ -4,21 +4,15 @@
 
 # 参考资料&原文链接
 
-[AssetManager系列之TAssetPtr与FStreamableManager](https://zhuanlan.zhihu.com/p/80846277)
-
 [UE4资源加载方式](https://www.sohu.com/a/203578475_667928)
 
 [Unreal4异步加载资源](https://zhuanlan.zhihu.com/p/369304308)
-
-[(UE4 4.20)UE4同步加载和异步加载UObject ----------LoadObject,LoadClass,FStreamableManager](https://blog.csdn.net/qq_29523119/article/details/84455486)
 
 [UE4 异步资源加载](https://blog.csdn.net/mmqqyyqqyyq/article/details/84001778)
 
 [StreamableManager和异步加载](https://blog.csdn.net/ywjun0919/article/details/92798152)
 
 [UE4学习记录：资源加载（一） ——DataAsset使用](https://blog.csdn.net/hyf2713/article/details/104972017)
-
-[UObjectLibrary](https://docs.unrealengine.com/4.27/en-US/API/Runtime/Engine/Engine/UObjectLibrary/)
 
 # DataAsset
 
@@ -74,6 +68,7 @@ class TESTPROJECT_API UImageDataAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
+    //注意公开
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FMyImage> Images;
 };
@@ -127,7 +122,17 @@ void UWC_TestUI::OnBtnClickCommonBtn_DataAsset()
 
 ![image-20211104215747658](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202111042157758.png)
 
+# 特点
+
+此方式的特点是：
+
+- 需要手动定义DataAsset的数据结构，并且要手动添加需要的数据的引用，稍显麻烦。
+- 不过手动定义数据结构的话灵活性极大，并且可以定义多种不同的数据。
+- 这种方式似乎类似于用DataTable数据驱动开发，就像一个配置表一样。DataTable也需要自定义数据类型。
+- 一个DataAsset可以给很多个蓝图使用，只需要使用UPROPOERTY宏。
+- DataAsset只是存储引用，并不是真正的加载数据，加载数据是用的其他方法。
+
 # 本文标签
 
-`游戏开发`、`游戏开发基础`、`Unreal Engine`、`UE4 资源加载`。
+`游戏开发`、`游戏开发基础`、`Unreal Engine`、`UE资源加载`。
 

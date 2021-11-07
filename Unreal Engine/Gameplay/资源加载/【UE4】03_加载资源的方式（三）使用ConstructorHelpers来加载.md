@@ -4,6 +4,8 @@
 
 # 参考资料&原文链接
 
+[UE4资源加载方式](https://www.sohu.com/a/203578475_667928)
+
 [[UE4]C++静态加载问题：ConstructorHelpers::FClassFinder和FObjectFinder](https://www.iteye.com/blog/aigo-2281373)
 
 # 使用ConstructorHelpers来加载
@@ -58,7 +60,12 @@ void UWC_TestUI::NativeConstruct()
 
 `ConstructorHelpers`有`FObjectFinder`和`FClassFinder`两种方法，通过Name（完整路径）分别找到Object或Class，它们的用法相似，不再赘述。
 
+# 特点
+
+- 同样是需要完整路径的一种加载方式。
+- 只能在构造函数里面使用，非构造函数中使用会引起Error。这适用于某些情况，例如要使用这个资源的时候必须加载另一种资源，这个时候就可以考虑在构造函数中使用ConstructorHelpers。
+
 # 本文标签
 
-`游戏开发`、`游戏开发基础`、`Unreal Engine`、`UE4 资源加载`。
+`游戏开发`、`游戏开发基础`、`Unreal Engine`、`UE资源加载`。
 
