@@ -106,7 +106,6 @@ FSoftObjectPath Path = FString(TEXT("Texture2D'/Game/UI/Images/InterestingUE4.In
 void UWC_TestUI::OnBtnClickCommonBtn_SmSyncOne()
 {
 	FSoftObjectPath Path = FString(TEXT("Texture2D'/Game/UI/Images/InterestingUE4.InterestingUE4'"));
-	//注意：在资源未完成加载之前代码会在这一行暂停运行以等待资源加载完成。
 	TSharedPtr<FStreamableHandle> SyncStreamableHandle = UAssetManager::GetStreamableManager().RequestSyncLoad(Path);
 	if (SyncStreamableHandle)
 	{
@@ -153,7 +152,7 @@ void UWC_TestUI::OnBtnClickCommonBtn_SmSyncGroup()
 	TArray<FSoftObjectPath> Paths;
 	Paths.AddUnique(FString(TEXT("Texture2D'/Game/UI/Images/InterestingUE4.InterestingUE4'")));
 	Paths.AddUnique(FString(TEXT("Texture2D'/Game/UI/Images/VS.VS'")));
-	//注意：在资源未完成加载之前代码会在这一行暂停运行以等待资源加载完成。
+
 	TSharedPtr<FStreamableHandle> SyncStreamableHandle = UAssetManager::GetStreamableManager().RequestSyncLoad(Paths);
 	if (SyncStreamableHandle)
 	{

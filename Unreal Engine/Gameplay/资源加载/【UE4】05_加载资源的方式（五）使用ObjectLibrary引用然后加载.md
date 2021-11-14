@@ -80,7 +80,7 @@ void UWC_TestUI::NativeConstruct()
 	//如果UObjectLibrary未被加载
 	if (!TextureOL)
 	{
-		//加兹一手，类型写自己想要的
+		//加载一手，类型写自己想要的
 		TextureOL = UObjectLibrary::CreateLibrary(UTexture2D::StaticClass(), false, false);
 		//手动指定不要被GC回收
 		TextureOL->AddToRoot();
