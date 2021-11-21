@@ -36,7 +36,7 @@
 
 它们的参数都是一样的，如下：
 
-```
+```c++
 /**
  * Find or load an object by string name with optional outer and filename specifications.
  * These are optional because the InName can contain all of the necessary information.
