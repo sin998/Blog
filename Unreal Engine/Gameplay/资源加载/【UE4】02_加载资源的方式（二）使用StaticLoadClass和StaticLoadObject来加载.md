@@ -30,6 +30,63 @@
 
 若想用异步加载则可以使用`FStreamableManager`，它同时提供了同步加载和异步加载两种方式。后面的文章会讲述。
 
+# 常见函数
+
+以下内容来自于[UE4的资源管理](https://zhuanlan.zhihu.com/p/357904199)：
+
++ **查找资源**
+
+1. FindObject
+2. FindObjectFast
+3. FindObjectChecked
+4. FindObjectSafe
+5. FSoftObjectPath::ResolveObject
+
++ **同步加载资源**
+
+1. LoadObject
+2. LoadClass
+3. LoadPackage
+4. FSoftObjectPath::TryLoad
+5. FStreamableManager::RequestSyncLoad
+6. FStreamableManager::LoadSynchronous
+7. FlushAsyncLoading（异步转同步）
+
++ **异步加载资源**
+
+1. LoadPackageAsync
+2. FStreamableManager::RequestAsyncLoad
+
++ **判断加载状态**
+
+1. GIsSavingPackage
+2. IsGarbageCollectingOnGameThread
+3. IsLoading
+4. GetNumAsyncPackages
+5. GetAsyncLoadPercentage
+6. FStreamableManager::IsAsyncLoadComplete
+
+大致介绍一下其中一些API的内部细节：
+
+**FindObject，FindObjectFast，FindObjectChecked，FindObjectSafe**
+
+查找资源的接口，会在内存中查找对象，找到就会返回，找不到会返回nullptr，不会触发加载。如果传入了Outer，就会在Outer所在的Package下面找对应的资源对象，如果没有Outer就会在全局找这个资源对象。Fast版本功能和FindObject相同，但是不会检查路径，明确知道完整路径时用这个可以避免检查路径开销，速度会快一些。Check版本功能也和FindObject相同，但是不会返回nullptr，找不到就会报Fatal，直接停止程序（Shipping和Test版不会）。Safe版本的函数功能和FindObject相同，但是在gc中或者在保存包中直接返回nullptr。
+
+# 资源加载的入口
+
+**LoadObject，LoadClass，LoadPackage**
+
+这几个函数就是最常用的同步加载资源，内部会先调用FindObject在内存中找，找到了直接返回，没找到就会进入同步加载。如果看源码的话，会发现不管哪个同步加载函数，最终都会把路径转化为Package再进行LoadPackage，前面路径部分也提到过，一个包里如果有多个资源，他们在硬盘上对应的是同一个文件，那么只需要加载这个文件就好了。如下图，再深入底层可以看到，最终调用的是**LoadPackageAsync**函数，这就是异步加载的入口。
+
+![v2-80c478b3467a0e4914bd26b111b34e01_720w](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202111262231179.jpg)
+
++ **FSoftObjectPath::TryLoad**
++ **FStreamableManager::RequestSyncLoad**
++ **FStreamableManager::LoadSynchronous**
++ **FStreamableManager::RequestAsyncLoad**
+
+这几个函数，其实都是更上层的封装，最终所有的加载都会走到**LoadPackageAsync**函数。这个函数就是UE4资源加载的大入口，后面整套资源加载都隐藏在了这个函数之后。其中最后一个FStreamableManager::RequestAsyncLoad是异步加载，可以提交要加载的资源路径和加载的回调函数，之后引擎在完成或失败时回调业务。
+
 # 动态加载的核心函数及参数
 
 核心函数是StaticLoadObject和StaticLoadClass函数，它们分别加载继承于UObject的资源和加载继承于UClass的C++类，当然加载它们的Native Class也是可以的。
