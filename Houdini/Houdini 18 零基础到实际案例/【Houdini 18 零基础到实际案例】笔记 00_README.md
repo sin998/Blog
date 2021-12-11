@@ -1,6 +1,6 @@
 [TOC]
 
-# 【Houdini】README
+# 【Houdini 18 零基础到实际案例】笔记 00_README
 
 # 参考资料&原文链接
 
@@ -18,4 +18,4 @@
 
 # 本文标签
 
-`游戏开发`、`Houdini`、`Houdini基础`、`程序化生成`。
+`游戏开发`、`Houdini`、`Houdini基础`、`程序化生成`、`笔记`、`视频笔记`。

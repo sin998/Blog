@@ -1,6 +1,6 @@
 [TOC]
 
-# 【Houdini】界面和导航
+# 【Houdini 18 零基础到实际案例】笔记 06_界面和导航
 
 # 参考资料&原文链接
 
@@ -32,7 +32,6 @@
 
 ![image-20211127200810915](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202111272008764.png)
 
-#  本文标签
+# 本文标签
 
-`游戏开发`、`Houdini`、`Houdini基础`、`程序化生成`。
-
+`游戏开发`、`Houdini`、`Houdini基础`、`程序化生成`、`笔记`、`视频笔记`。

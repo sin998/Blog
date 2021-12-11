@@ -1,6 +1,6 @@
 [TOC]
 
-# 【Houdini】Houdini和其他三维软件的区别
+# 【Houdini 18 零基础到实际案例】笔记 03_Houdini和其他三维软件的区别
 
 # 参考资料&原文链接
 

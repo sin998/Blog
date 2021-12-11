@@ -1,6 +1,6 @@
 [TOC]
 
-# 【Houdini】Houdini基础操作
+# 【Houdini 18 零基础到实际案例】笔记 07_Houdini基础操作
 
 # 参考资料&原文链接
 
@@ -208,6 +208,6 @@ Home视角是固定的。
 
 ![asdads](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202111272334049.gif)
 
-#  本文标签
+# 本文标签
 
-`游戏开发`、`Houdini`、`Houdini基础`、`程序化生成`。
+`游戏开发`、`Houdini`、`Houdini基础`、`程序化生成`、`笔记`、`视频笔记`。
