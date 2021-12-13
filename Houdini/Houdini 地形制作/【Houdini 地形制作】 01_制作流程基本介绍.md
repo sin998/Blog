@@ -133,14 +133,11 @@ HeightField Layer Property
 HeightField Mask Blur
 HeightField Mask by Feature
 HeightField Mask by Object
-HeightField Mask by
-Occlusion
+HeightField Mask by Occlusion
 HeightField Mask Clear
-HeightField
-Mask Expand
+HeightField Mask Expand
 HeightField Mask Noise
-HeightField
-Mask Shrink
+HeightField Mask Shrink
 HeightField Noise
 HeightField Output
 
