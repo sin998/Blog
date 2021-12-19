@@ -1,8 +1,8 @@
 # 【Houdini 地形制作】 06_把参数提到Subnetwork外面
 
+把参数提到外面方便我们操作，不然每次都要点进去，麻烦得很。
+
 ![image-20211219154852321](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112191548079.png)
-
-
 
 ![image-20211219155154457](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112191551297.png)
 
