@@ -16,7 +16,11 @@
 
 ![image-20211219193242679](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112191932502.png)
 
-展示最后一个节点，然后选中paint节点，在视口中按下回车出操作手柄然后开始画，这样我们就能快速弄一个山出来了：
+展示最后一个节点，然后选中paint节点，在视口中按下回车出操作手柄然后开始画：
+
+![image-20211220202931558](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202029566.png)
+
+这样我们就能快速弄一个山出来了：
 
 ![ssddddd](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112191933202.gif)
 
@@ -30,6 +34,6 @@
 
 # Copy一个Object作为山
 
-注意把tube调大点，不然看不见
+注意把tube调大点，不然看不见。
 
 ![image-20211219195744441](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112191957411.png)
