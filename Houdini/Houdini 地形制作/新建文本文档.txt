@@ -1,273 +1,219 @@
-# 【Houdini 地形制作】 09_地形制作实践_基础地形
+# 【Houdini 地形制作】 10_地形制作实践_制作Mask
 
-这是我们最终要做的地形，现在我们做它的基础地形。
+# 制作Mask
 
-![image-20211212154255997](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112121542414.png)
+我们现在有很多层，可以看一下：
 
-# 基础地形
+![image-20211221211638924](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212116152.png)
 
-## 画个山
+## river
 
-先画个山。
+![image-20211221211719226](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212117052.png)
 
-![image-20211220203555978](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202035648.png)
+## mesa
 
-![image-20211220203612643](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202036814.png)
+![image-20211221211751561](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212117420.png)
 
-## 做个坑
+## debris
 
-再做个坑。
+![image-20211221211839690](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212118772.png)
 
-![image-20211220203820446](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202038879.png)
+## sediment
 
-注意这一步combine method选minimum是比较好的。
+![image-20211221211855381](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212118367.png)
 
-![image-20211220203911993](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202039923.png)
+## flow
 
-给这个坑留一层Mask，后面好处理：
+![image-20211221211908660](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212119777.png)
 
-![image-20211220204038252](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202040888.png)
+## water
 
-## 给地形一些小noise
+可以做水坑。
 
-下面给地形搞一些小凸起，凹凸不平的这种效果。
+![image-20211221211928962](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212119124.png)
 
-![image-20211220204615026](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202046077.png)
+## cliff
 
-我们用height layer来做。
+这个层使用heightfield_maskbyfeature筛选的，坡度就是默认的20~70°，是一个经典的Cliff层。
 
-参数一：基础地形。就用上一步的那个地形。
+![image-20211221211959446](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212120467.png)
 
-参数二：要拷贝的地形。先把基础地形打平，然后再noise一下，最后，再裁剪下半部分，因为我们需要地形noise之后的上半部分。
+## snow
 
-参数三：要作用到哪个mask上。由于我们希望这个mask会影响到我们的坑，所以要用第一步paint我们自己画的mask来减去这个坑的mask。
+这个层使用heightfield_maskbyfeature筛选的，高度就是自定义的一个高度，这里用的是75~174，可以用来放一些雪的材质。
 
-### 参数二：要拷贝的地形
+![image-20211221212117263](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212121597.png)
 
-![image-20211220205227509](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202052979.png)
+# 制作mask示例
 
-![image-20211220205715509](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202057599.png)
+你可以用这些层来种草种树撒石头修房子之类的，注意这些都是一个一个的instance，所以在种之前一定要保证mask的值是非0即1的，0就不种，1就种。
 
-![image-20211220205834134](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202058245.png)
+如果不是在这两个数之中的话那么在这些mask的边缘（例如值是零点几这种很小的值的话），你可能看不到，但是instance已经种到哪里了，到时候你就很疑惑，明明我没有指定这里啊为什么还种了- -。
 
-### 参数三：要作用到哪个mask上
+## 种草
 
-![image-20211220205004658](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202050727.png)
+比如说我要种草，一般来说草是长在平地，不会长在河里，也不会长在顶峰，所以就用mesa层减去river层。
 
-注意，这一步是一个习惯性做法，把mask限制到0~1以内。如果不是在这个区间以内的话后面会达不到预期的效果，后面运算的值是错误的。
+![image-20211221212633786](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212126094.png)
 
-我们可以看一下如果直接连接会是什么情况：
+注意限定mask为0或者1。
 
-![image-20211220210135065](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202101949.png)
+![image-20211221213006244](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212130117.png)
 
-感受一下：
+你也可以用remap来限定，在这之前看一下mask这个值，这些值不是我们想要的。
 
-![image-20211220210248181](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202102540.png)
+![image-20211221213140379](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212131306.png)
 
-![image-20211220210319985](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202103037.png)
+直接限制。
 
-所以我们还是一样的，把mask限制到0~1以内，并且把多的值去掉。
+![image-20211221213229097](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212132855.png)
 
-![image-20211220210410089](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202104061.png)
+两种方法都可以，只不过第一种方法比较快速点。
 
-最后用layer节点拷过去就行：
+当然两种方法也可以一起用，不冲突也保险。
 
-![image-20211220204615026](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202106259.png)
+最后你可以把这一层保存下来，注意命名规范，I表示Instance，后面表示Instance的类型。
 
-## 保持Mask整洁
+![image-20211221214717714](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212147760.png)
 
-对mask进行操作以后尽量用clear mask来清理一下mask，让mask保持「整洁」，不要影响我们接下来的操作，这是一个好习惯。
+还有其他的，比如材质前面就加一个「M_」。
 
-![image-20211220214056399](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202140407.png)
+## 种树
 
-## 给山润滑
+种树是在种草的基础上种的。
 
-然后就可以用disort节点给山润滑一下，看你心情：
+首先树的数目肯定比草少，并且草种的是比较多且密的，数就需要分散的疏密和随机一点。
 
-![ssdddddddd](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202109521.gif)
+所以随机的效果我们就用masknoise来做，把mask给noise一下：
 
-## 给地形加点粗糙度
+![image-20211221213809176](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212138380.png)
 
-我觉得地形有点平，可以叠一个 Sparse Convolution罩波，再加一点粗糙度。
+注意这个mask现在不是非0即1的，所以我们需要把它搞成非0即1的，但是又要注意树是比草要疏的，所以我们可以这样做：
 
-![image-20211220211141369](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202111572.png)
+![image-20211221214110756](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212141425.png)
 
-![image-20211220211218561](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202112739.png)
+最后用滑块来控制种树的mask的大小：
 
-## 用erode节点给地形加点细节
+![fff](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212143532.gif)
 
-![image-20211220211755665](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202117131.png)
+一样的保存一下：
 
-![image-20211220212103459](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202121371.png)
+![image-20211221214940436](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212149308.png)
 
-然后你会发现有这种缝隙：
+最后一样的clear一下。
 
-![image-20211220212147197](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202121594.png)
+## 保存层
 
-这种缝隙说过的，很丑，人也不能在上面跑，会在UE里面表现为一个很深的沟壑，所以我们处理一下。
+注意height_layer保存的时候只有连上第一个input的才会保存层，一层一层的传递下去。
 
-用两个Blur来处理，第一个Blur是Blur Mask，第二个Blur是Blur地形。
+![image-20211221215353177](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212153935.png)
 
-先把水的这一层的副本Mask层（前面我们已经把Water层拷贝为Mask层了，所以这里操作Mask层实际上就是在操作Water的副本）平滑一下，然后再用平滑过后的Mask对地形进行平滑。
+## 河流
 
-![image-20211220212655657](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202126858.png)
+比如我再做一个河流的materia层，当然最后不要忘了maskclear。
 
-![image-20211220212709994](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202127138.png)
+![image-20211221215724692](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212157106.png)
 
- 一样的，不要忘记清理一下mask，保持mask整洁。
+## 做其他层
 
-![image-20211220214205732](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202142899.png)
+上面做河流那个是一个三件套，你做好这一个之后其他的层都可以直接拷贝就完事了，这里一共做了这几个层。
 
-注意在Blur地形的时候一定要勾上mask aware blur，不然会出现这种小凸起：
+![image-20211221220159075](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212202088.png)
 
-![image-20211220213049765](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202130655.png)
+## 删除层
 
-但是在处理的时候我们要注意我们只是处理这种沟壑，不要把山影响了，所以我们需要针对Water层来处理。如果不针对Water层来处理的话整个地形又会变得很平滑了，这不是我们想要的：
+最后用一个blast把我们不需要的层删除掉，以节约存储空间。
 
-![image-20211220212930705](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202129668.png)
+![image-20211221220424939](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212204883.png)
 
-## 做一些平地
+删除以后：
 
-整个地形还是需要一些平地的，不可能全是凹凸和山脉。
+![image-20211221220457491](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212204278.png)
 
-我们用clip直接打屏一些地形，就用减去的圆圈的这个mask吧：
+## 清理层
 
-![image-20211220205004658](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202050727.png)
+把所有的层置为非0即1。
 
-注意我们只想打平底地形，不要影响山，不能把山一起削平了。
+随便拿一个层出来看一下，例如我这里拿Debris层：
 
-![image-20211220213842363](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202138257.png)
+![image-20211221222314684](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212223899.png)
 
-## 用disort打乱一下山脉
+会发现这个层并不是非0即1的，所以我们一定要做好工作，这里我们用一个foreach循环来做这件事。
 
-由于这个算法的原因，我们操作以后这个山会表现的特别「硬」，很有规律，这看起来不是很理想，有点假：
+我们先查看一下值，在视口按下alt+]呼出一个面板，然后新建一个Geometry Spreadsheet面板：
 
-![image-20211220214554944](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202145464.png)
+![image-20211221222657492](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212226437.png)
 
-用disort节点稍微打乱一下就要好很多。
+他们依次是：
 
-![image-20211220214619240](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202146369.png)
+![image-20211221224933834](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212249894.png)
 
-注意我们是针对山坡，不要影响其他地方，所以我们用maskbyfeature把山坡筛选出来，筛选的条件是坡度在20~70之间：
+然后显示我们的层级，可以发现所有的layer都是保存在面层级上的。
 
-![image-20211220214756571](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202147622.png)
+![image-20211221222818195](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212228888.png)
 
-## 画个河
+先看下foreach end：
 
-下面我们搞个河流，直接用cruve节点画河流，然后用Sweep扫描出来，最后用height project或者height mask by object把河流添加到地形上即可。
+![image-20211221223231189](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212232025.png)
 
-### curve+sweep弄出河流
+我们现在知道一共需要循环9次，但是如果是写死9次的话，如果我上面多一层或者少一层那么这个值就不应该是9次了，这个值应该是一个可变的，并且是随着我们这个层数的变化而变化的。
 
-用cruve来控制河的主体形状，用sweep来控制河的深度宽度。
+那么这个值是多少呢，前面说过我们的层都是保存在面上面的，所以如果可以取得面的个数问题就解决了。
 
-![image-20211220215408052](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202154998.png)
+我们可以用一个表达式「nprims」来取得某个节点的面的个数。
 
-扫描一下，我们这里就不用几何体了，直接把Col设置为2打平河流。
+![image-20211221223650024](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212236141.png)
 
-![image-20211220221059848](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202211855.png)
+我们用prims函数来返回一个属性，处理每一个面。
 
-当然你要是非要用几何体来扫描也不是不行。
+![image-20211221224343837](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212243871.png)
 
-注意用几何体来扫描的话，河流的宽度和深度就是由几何体的size决定的，不再由Sweep决定了。
+用detail来取得面板编号。
 
-![image-20211220221338423](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202213614.png)
+![image-20211221225051817](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212250803.png)
 
-### 把河流加到地形上面
+所以表达式就是这样的：
 
-有两种方法，一种是直接用project把河流拷到地形上，另一种是用maskbyobject先把河流的遮罩选出来，然后再用remap把地形映射一下，映射的输出值调低一点就行了。
+```
+`prims("../Out_clamp",detail("../foreach_begin2_metadata14","iteration",0),"name")`
+```
 
-第一种方式：
+参数解释：
 
-![image-20211220221813970](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202218436.png)
+![image-20211221225925232](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212259745.png)
 
-第二种方式：
+foreach_begin2_metadata14里面有个iteration属性：
 
-![image-20211220222016021](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202220151.png)
+![image-20211221225241985](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212252725.png)
 
-### 留下河的材质层
+这样的话就能把Out_Clamp的每一层拿到。
 
-保存下河的材质层，后面可能会要用，比如说在UE里面单独给河流一个材质。
+然后再修改它：
 
-![image-20211220223953693](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202239573.png)
+![image-20211221230200584](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212302892.png)
 
-### 平滑一下河岸两边
+你也可以这样修改，效果相同：
 
-这个河岸看起来不太友好，我们处理一下。
+![image-20211221230219851](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212302762.png)
 
-![image-20211220222354670](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202223748.png)
+最后再把改变的值写回去，再clear一下就算完成了一次循环：
 
-处理的方式是和前面「用erode节点给地形加点细节」的内容一样的，即先取出河的mask，对此mask进行blur，然后再依据blur后的mask对地形进行blur。
+![image-20211221230353968](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212303121.png)
 
-![image-20211220222745611](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202227627.png)
+可以看一下循环一次的结果是不是非0即1：
 
-注意这里remap把mask的值打成了0~1：
+![image-20211221230600670](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212306419.png)
 
-![image-20211220222823281](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202228482.png)
+挺好的，效果OK。循环完毕后用layer节点把原来的值直接覆盖掉，千万注意要连接第一个input：
 
-如果你重新计算的话会发现它的值并不是在0~1之间的：
+![image-20211221230640802](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212306995.png)
 
-![image-20211220222901316](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202229417.png)
+我们可以检查一下是不是真的非0即1：
 
-如果直接使用这个值的话就达不到我们想要的效果：
+![image-20211221231144356](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212311332.png)
 
-![image-20211220223009627](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202230451.png)
+可以发现确实是非0即1。
 
-最后在blur一下河岸，效果就差不多了。
+![image-20211221231210878](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212312691.png)
 
-![image-20211220223124242](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202231419.png)
-
-### 弯曲一下河流细节
-
-一样的用disort弯曲一下河流，跟「用disort打乱一下山脉」的用法差不多，注意要先blur一下mask。
-
-![image-20211220223319296](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202233493.png)
-
-### 保留River层
-
-同样的是留下层级以备不时之需，我们就新起一个层river。
-
-![image-20211220224136973](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202241131.png)
-
-![image-20211220224446028](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202244114.png)
-
-随手maskclear一下，保持好习惯：
-
-![image-20211220224212208](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112202242449.png)
-
-到这一步就基本地形就差不多了，下一步提高精度再雕刻其余部分。
-
-# 再加细节
-
-## 稍微雕刻
-
-你要是觉得现在的场景还是比较糊的话可以再加点细节。
-
-![image-20211221100341148](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112211003448.png)
-
-河流再雕刻：
-
-![image-20211221102556302](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112211025061.png)
-
-地形再雕刻：
-
-![image-20211221210323532](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212103049.png)
-
-好习惯不能丢：
-
-![image-20211221210504581](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212105804.png)
-
-就是你想做什么效果都可以自己慢慢做，做到自己满意为止。
-
-比如我想把这个干掉，这玩意儿特别碍事。
-
-![image-20211221210738837](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212107461.png)
-
-![image-20211221210915151](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212109086.png)
-
-# 完成地形
-
-你要是想在Blur一下的话可以用flowfield把flow层选出来在blur，这个节点更丰富，最后再加上一个NULL来标志一下，我们这个地形差不多就基本做完了。
-
-![image-20211221211046110](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212110647.png)
-
-当然这只是个简单的地形，你可以对你的地形进行精雕细琢做好看做丰富。
+# 

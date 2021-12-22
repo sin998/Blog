@@ -44,13 +44,13 @@
 
 ![image-20211221212117263](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212121597.png)
 
-## 制作mask示例
+# 制作mask示例
 
 你可以用这些层来种草种树撒石头修房子之类的，注意这些都是一个一个的instance，所以在种之前一定要保证mask的值是非0即1的，0就不种，1就种。
 
 如果不是在这两个数之中的话那么在这些mask的边缘（例如值是零点几这种很小的值的话），你可能看不到，但是instance已经种到哪里了，到时候你就很疑惑，明明我没有指定这里啊为什么还种了- -。
 
-### 种草
+## 种草
 
 比如说我要种草，一般来说草是长在平地，不会长在河里，也不会长在顶峰，所以就用mesa层减去river层。
 
@@ -78,7 +78,7 @@
 
 还有其他的，比如材质前面就加一个「M_」。
 
-### 种树
+## 种树
 
 种树是在种草的基础上种的。
 
@@ -102,25 +102,25 @@
 
 最后一样的clear一下。
 
-### 保存层
+## 保存层
 
 注意height_layer保存的时候只有连上第一个input的才会保存层，一层一层的传递下去。
 
 ![image-20211221215353177](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212153935.png)
 
-### 河流
+## 河流
 
 比如我再做一个河流的materia层，当然最后不要忘了maskclear。
 
 ![image-20211221215724692](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212157106.png)
 
-### 做其他层
+## 做其他层
 
 上面做河流那个是一个三件套，你做好这一个之后其他的层都可以直接拷贝就完事了，这里一共做了这几个层。
 
 ![image-20211221220159075](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212202088.png)
 
-### 删除层
+## 删除层
 
 最后用一个blast把我们不需要的层删除掉，以节约存储空间。
 
@@ -130,7 +130,7 @@
 
 ![image-20211221220457491](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212204278.png)
 
-### 清理层
+## 清理层
 
 把所有的层置为非0即1。
 
