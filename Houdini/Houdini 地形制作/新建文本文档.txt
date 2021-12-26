@@ -1,219 +1,226 @@
-# 【Houdini 地形制作】 10_地形制作实践_制作Mask
+# 【Houdini 地形制作】 11_地形分块并导入UE
 
-# 制作Mask
+# 打包并制作分块
 
-我们现在有很多层，可以看一下：
+先打包。
 
-![image-20211221211638924](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212116152.png)
+![image-20211222220723813](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112222207471.png)
 
-## river
+然后merge的对象就选这个「OUT_final_terrain」。
 
-![image-20211221211719226](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212117052.png)
+再制作分块：
 
-## mesa
+![image-20211222220810742](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112222208453.png)
 
-![image-20211221211751561](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212117420.png)
+我们需要把这个Tile Number传递到UE里面。
 
-## debris
+# 官方指引
 
-![image-20211221211839690](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212118772.png)
+接下来打开官方文档：https://www.sidefx.com/docs/unreal/
 
-## sediment
+找到houdini和UE关联需要的参数：https://www.sidefx.com/docs/unreal/_attributes
 
-![image-20211221211855381](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212118367.png)
+我们可以在这个页面找到如何将Houdini的一些属性传递到UE中，将他们对应起来。
 
-## flow
+# 需要的两个属性
 
-![image-20211221211908660](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212119777.png)
+我们做分块需要注意两个属性：
 
-## water
+unreal_level_path和unreal_landscape_tile_actor_type。
 
-可以做水坑。
+## unreal_level_path
 
-![image-20211221211928962](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212119124.png)
+地形分块是把一个大地形分为很多个小地形。
 
-## cliff
+在UE里面就是一个持久关卡里面有很多子关卡。
 
-这个层使用heightfield_maskbyfeature筛选的，坡度就是默认的20~70°，是一个经典的Cliff层。
+我们需要在UE里面去指定子关卡的地址。
 
-![image-20211221211959446](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212120467.png)
+![image-20211222221255871](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112222212910.png)
 
-## snow
+决定当烘烤到演员/叶子时输出烘焙的水平。网格，实例，叶子和风景被烤到指定的水平。这对于世界组成、烘焙景观瓷砖及其相关的实例或每个瓷砖的独立层次的叶子特别有用。此属性也可用于输入(即设置为输入产生的关卡路径)。默认值是"."，它将在当前持久世界中生成几何图形，以"/"开头的路径被认为是绝对的，否则路径是相对于当前持久世界的地图。(支持字符串标记)。
 
-这个层使用heightfield_maskbyfeature筛选的，高度就是自定义的一个高度，这里用的是75~174，可以用来放一些雪的材质。
+翻译：我们需要传入每个子关卡的路径，这个是从UE里面复制的引用，然后加上每个子关卡的后缀名而成的，下文会演示。
 
-![image-20211221212117263](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212121597.png)
+## unreal_landscape_tile_actor_type
 
-# 制作mask示例
+让UE识别这个地形是一个分块。
 
-你可以用这些层来种草种树撒石头修房子之类的，注意这些都是一个一个的instance，所以在种之前一定要保证mask的值是非0即1的，0就不种，1就种。
+![image-20211222221805819](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112222218796.png)
 
-如果不是在这两个数之中的话那么在这些mask的边缘（例如值是零点几这种很小的值的话），你可能看不到，但是instance已经种到哪里了，到时候你就很疑惑，明明我没有指定这里啊为什么还种了- -。
+指示应为平铺式景观创建的景观参与者的类型，可以是单个景观参与者(0)，也可以是具有共享景观参与者(1)的景观流代理。
 
-## 种草
+翻译：如果是整块地形，就将此值置为0；如果是整块中的某一小块，就将此值置为1。
 
-比如说我要种草，一般来说草是长在平地，不会长在河里，也不会长在顶峰，所以就用mesa层减去river层。
+# 创建属性
 
-![image-20211221212633786](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212126094.png)
+接下来用attributecreate节点创建这两个属性。
 
-注意限定mask为0或者1。
+创建unreal_landscape_tile_actor_type：
 
-![image-20211221213006244](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212130117.png)
+![image-20211222222845456](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112222228397.png)
 
-你也可以用remap来限定，在这之前看一下mask这个值，这些值不是我们想要的。
+创建unreal_level_path：
 
-![image-20211221213140379](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212131306.png)
+因为需要关卡路径，所以先打开UE。
 
-直接限制。
+先创建一个关卡，复制路径：
 
-![image-20211221213229097](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212132855.png)
+![image-20211226152036700](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261520527.png)
 
-两种方法都可以，只不过第一种方法比较快速点。
+比如说我复制的路径是：
 
-当然两种方法也可以一起用，不冲突也保险。
+`World'/Game/Map/Map_Main.Map_Main'`
 
-最后你可以把这一层保存下来，注意命名规范，I表示Instance，后面表示Instance的类型。
+那么要填入的是：
 
-![image-20211221214717714](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212147760.png)
+`/Game/Map/Map_Main/PDG_{tile}`
 
-还有其他的，比如材质前面就加一个「M_」。
+![image-20211226152344543](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261523229.png)
 
-## 种树
+`PDG_{tile}`是每个地形块的名称，后面会讲到。用`{}`扩起来的是可以被UE识别的属性，这会传递到UE里面，UE就能识别了。
 
-种树是在种草的基础上种的。
+# 创建数字资产
 
-首先树的数目肯定比草少，并且草种的是比较多且密的，数就需要分散的疏密和随机一点。
+把它们打个包：
 
-所以随机的效果我们就用masknoise来做，把mask给noise一下：
+![image-20211222223134877](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112222231181.png)
 
-![image-20211221213809176](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212138380.png)
+添加一个Output：
 
-注意这个mask现在不是非0即1的，所以我们需要把它搞成非0即1的，但是又要注意树是比草要疏的，所以我们可以这样做：
+![image-20211226151312896](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261513318.png)
 
-![image-20211221214110756](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212141425.png)
+把需要的参数提上来，PDG需要：
 
-最后用滑块来控制种树的mask的大小：
+![image-20211226151503809](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261515736.png)
 
-![fff](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212143532.gif)
+一样的创建数字资产。第一个是最后输出的完整山脉。
 
-一样的保存一下：
+![image-20211226165142387](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261651647.png)
 
-![image-20211221214940436](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212149308.png)
+第二个是我们的分块地形。
 
-最后一样的clear一下。
+![image-20211226163620823](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261636881.png)
 
-## 保存层
+![image-20211226165204070](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261652533.png)
 
-注意height_layer保存的时候只有连上第一个input的才会保存层，一层一层的传递下去。
+保存好以后都save一下。
 
-![image-20211221215353177](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212153935.png)
+# 创建topnetwork节点
 
-## 河流
+注意我们这个节点是在obj层级创建的：
 
-比如我再做一个河流的materia层，当然最后不要忘了maskclear。
+![image-20211226152806971](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261528782.png)
 
-![image-20211221215724692](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212157106.png)
+前面那些都是在geo里面做的：
 
-## 做其他层
+![image-20211226152722539](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261527551.png)
 
-上面做河流那个是一个三件套，你做好这一个之后其他的层都可以直接拷贝就完事了，这里一共做了这几个层。
+进入节点，可以看到一个名为localscheduler的节点，这是用来控制工作流的，可以不用管它。
 
-![image-20211221220159075](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212202088.png)
+我们直接创建一个HDA（hdaprocessor）：
 
-## 删除层
+![image-20211226165336653](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261653902.png)
 
-最后用一个blast把我们不需要的层删除掉，以节约存储空间。
+再创建一个wedge：
 
-![image-20211221220424939](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212204883.png)
+![image-20211226165709975](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261657727.png)
 
-删除以后：
+我们可以看一下（双击小点就能出来）：
 
-![image-20211221220457491](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212204278.png)
+这是第0块：
 
-## 清理层
+![image-20211226171543227](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261715557.png)
 
-把所有的层置为非0即1。
+这是第1块：
 
-随便拿一个层出来看一下，例如我这里拿Debris层：
+![image-20211226171624248](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112261716793.png)
 
-![image-20211221222314684](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212223899.png)
+然后再搞一个hdaprocessor，这个是分块的：
 
-会发现这个层并不是非0即1的，所以我们一定要做好工作，这里我们用一个foreach循环来做这件事。
+![image-20211226180211961](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262131486.png)
 
-我们先查看一下值，在视口按下alt+]呼出一个面板，然后新建一个Geometry Spreadsheet面板：
+注意参数不要忘了，这个就是上一步wedge中创建的：
 
-![image-20211221222657492](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212226437.png)
+![image-20211226213138299](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262131704.png)
 
-他们依次是：
+然后退一级界面，把这个打个包：
 
-![image-20211221224933834](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212249894.png)
+![image-20211226213316177](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262133941.png)
 
-然后显示我们的层级，可以发现所有的layer都是保存在面层级上的。
+直接创建一个数字资产，我把它命名为「PDG_split_terrain」。
 
-![image-20211221222818195](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212228888.png)
+创建的时候可能会报一个警告，这是因为我们引用了外部资产，直接点OK。
 
-先看下foreach end：
+每个分块的HDA是很小的，但是如果是保存的地形那么就会很大：
 
-![image-20211221223231189](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212232025.png)
+![image-20211226213609474](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262136977.png)
 
-我们现在知道一共需要循环9次，但是如果是写死9次的话，如果我上面多一层或者少一层那么这个值就不应该是9次了，这个值应该是一个可变的，并且是随着我们这个层数的变化而变化的。
+# 导入UE
 
-那么这个值是多少呢，前面说过我们的层都是保存在面上面的，所以如果可以取得面的个数问题就解决了。
+先把地形的分块打开。
 
-我们可以用一个表达式「nprims」来取得某个节点的面的个数。
+![image-20211226213914864](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262139957.png)
 
-![image-20211221223650024](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212236141.png)
+直接把刚刚导出的那个文件甩进来，然后创建到中心，打开它的详情面板就会发现两个属性：
 
-我们用prims函数来返回一个属性，处理每一个面。
+![image-20211226214113701](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262141653.png)
 
-![image-20211221224343837](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212243871.png)
+回到HE，然后在最后一个输出节点中把输出的前缀「HE_OUT_」加上，以供UE识别。
 
-用detail来取得面板编号。
+保存好之后不要忘记save。
 
-![image-20211221225051817](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212250803.png)
+然后回到UE。
 
-所以表达式就是这样的：
+![image-20211226214416871](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262144829.png)
 
-```
-`prims("../Out_clamp",detail("../foreach_begin2_metadata14","iteration",0),"name")`
-```
+在节点里面也要重新弄一下：
 
-参数解释：
+![image-20211226214436882](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262144805.png)
 
-![image-20211221225925232](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212259745.png)
+然后直接Cook：
 
-foreach_begin2_metadata14里面有个iteration属性：
+![image-20211226214843933](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262148133.png)
 
-![image-20211221225241985](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212252725.png)
+这个时候就会发现地形一块块的被导入进来了，这是最后的效果。
 
-这样的话就能把Out_Clamp的每一层拿到。
+![image-20211226215035178](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262150573.png)
 
-然后再修改它：
+# 把地形Bake到子关卡
 
-![image-20211221230200584](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212302892.png)
+这样的话地形已经到持久关卡了，一下子就在持久关卡也不是很理想，我们是需要按需加载的，所以要把分块地形弄到子关卡中。
 
-你也可以这样修改，效果相同：
+最后再Bake一下，注意Bake有两种：
 
-![image-20211221230219851](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212302762.png)
+![image-20211226215204700](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262152589.png)
 
-最后再把改变的值写回去，再clear一下就算完成了一次循环：
+![image-20211226215236631](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262152607.png)
 
-![image-20211221230353968](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212303121.png)
+我们用第二种。Bake完毕之后是这样的：
 
-可以看一下循环一次的结果是不是非0即1：
+![image-20211226215816401](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262158090.png)
 
-![image-20211221230600670](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212306419.png)
+看一眼：
 
-挺好的，效果OK。循环完毕后用layer节点把原来的值直接覆盖掉，千万注意要连接第一个input：
+![image-20211226220738431](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262207836.png)
 
-![image-20211221230640802](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212306995.png)
+![image-20211226220709024](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112262207189.png)
 
-我们可以检查一下是不是真的非0即1：
+最后愉快的Save All就行了，地形分块部分到此结束。
 
-![image-20211221231144356](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212311332.png)
 
-可以发现确实是非0即1。
 
-![image-20211221231210878](https://sin998-blog-image.oss-cn-beijing.aliyuncs.com/images/202112212312691.png)
 
-# 
+
+
+
+
+
+
+
+
+
+
+
+
+
